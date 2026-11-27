@@ -1,0 +1,34 @@
+---
+title: "Dr Barts"
+subtitle: "Premier League Clubs: Team Dashboards"
+format:
+  html:
+    theme:
+      - litera
+      - Matchdash.scss
+    page-layout: full
+---
+
+## Premier League Clubs: Team Dashboards
+
+Season trends, league context, passing, threat, pressing and goalkeeping for every club. Updated after each round of games.
+
+```{r}
+#| echo: false
+#| message: false
+#| results: asis
+clubs <- sort(list.dirs(".", recursive = FALSE, full.names = FALSE))
+clubs <- clubs[!grepl("^[._]|^Images$|_files$", clubs)]
+cards <- vapply(clubs, function(cl) {
+  html <- list.files(cl, pattern = "_Dashboard\\.html$")
+  if (!length(html)) return(NA_character_)
+  thumb <- file.path(cl, sub("\\.html$", "_files", html[1]), "figure-html", "league ranks strip-1.png")
+  if (!file.exists(thumb)) thumb <- "Images/Premier-League-ball.png"
+  upd <- format(file.info(file.path(cl, html[1]))$mtime, "%d %b %Y")
+  sprintf(paste0('<div class="g-col-12 g-col-md-6 g-col-lg-4"><div class="card season-card">',
+                 '<div class="season-card-media"><img src="%s" class="card-img-top img-fluid" alt="%s"></div>',
+                 '<div class="card-body"><h3><a href="%s">%s</a></h3><div class="text-muted">Updated %s</div></div></div></div>'),
+          utils::URLencode(thumb), cl, utils::URLencode(file.path(cl, html[1])), cl, upd)
+}, character(1))
+knitr::asis_output(paste0('<div class="grid">', paste(na.omit(cards), collapse = "\n"), "</div>"))
+```

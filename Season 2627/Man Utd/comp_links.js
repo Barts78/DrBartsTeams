@@ -1,0 +1,1 @@
+window.UP_COMP_LINKS = [{"label":"Premier League","href":"Man_Utd_2627_Team_Dashboard.html"},{"label":"Champions League","href":"Man_Utd_2627_Team_Dashboard_CL.html"},{"label":"All competitions","href":"Man_Utd_2627_Team_Dashboard_All.html"}];
